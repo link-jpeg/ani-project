@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jujupedia - Jujutsu Kaisen Encyclopedia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    
+    <!-- Full-screen loading overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <img src="assets/jjk-loading.gif" alt="Loading Jujupedia">
+        <div class="loading-message">
+            <span id="loading-text">Loading</span>
+            <span id="loading-dots"></span>
+        </div>
+    </div>
 
+    <!-- Header / Navigation -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🔮 JUJUPEDIA</h1>
+                    <span class="tagline">Jujutsu Kaisen Encyclopedia</span>
+                </div>
+                
+                <div class="search-section">
+                    <input type="text" id="search-input" placeholder="Search characters, techniques, domains..." class="search-input">
+                </div>
+                
+                <div class="auth-section">
+                    <button id="login-btn" class="btn btn-login">Login</button>
+                    <span id="user-greeting" class="user-greeting" style="display: none;"></span>
+                    <button id="logout-btn" class="btn btn-logout" style="display: none;">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h3>Explore the World of Jujutsu</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All Characters</button>
+                    <button class="filter-btn" data-filter="students">Students</button>
+                    <button class="filter-btn" data-filter="teachers">Teachers</button>
+                    <button class="filter-btn" data-filter="villains">Curses & Villains</button>
+                    <button class="filter-btn" data-filter="special-grade">Special Grade</button>
+                </div>
+            </div>
+
+            <!-- Character Grid -->
+            <div id="character-grid" class="character-grid">
+                <!-- Characters will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to Jujupedia</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="bob@mail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="bobpass" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                    <div class="demo-credentials">
+                        <small>Demo: bob@mail.com / bobpass</small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 Jujupedia - The Ultimate Jujutsu Kaisen Encyclopedia</p>
+            <p>Data provided by Jikan API (MyAnimeList) | Fan-made project</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+    <script src="js/card.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/storage.js"></script>
+</body>
+</html>
