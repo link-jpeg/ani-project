@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jujupedia - About Us</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="assets/logo-1.jpg" alt="Jujupedia" class="logo-img">
+                    <span class="tagline">Jujutsu Kaisen Encyclopedia</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="characters.html" class="nav-link">Characters</a>
+                    <a href="favorites.html" class="nav-link">My Favorites</a>
+                    <a href="about.html" class="nav-link active">About</a>
+                </div>
+                <div class="auth-section">
+                    <button id="login-btn" class="btn btn-login">Login</button>
+                    <span id="user-greeting" class="user-greeting" style="display: none;"></span>
+                    <button id="logout-btn" class="btn btn-logout" style="display: none;">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="about-page">
+                <h1>About Jujupedia</h1>
+                <p class="about-subtitle">The Ultimate Jujutsu Kaisen Encyclopedia</p>
+                
+                <div class="about-section">
+                    <h2>📖 Our Mission</h2>
+                    <p>Jujupedia was created to provide fans with a comprehensive, easy-to-use database of Jujutsu Kaisen characters. Our goal is to be the go-to resource for information on sorcerers, curses, techniques, and domains from the series.</p>
+                </div>
+                
+                <div class="about-section">
+                    <h2>👥 Meet The Team</h2>
+                    <div class="team-grid">
+                        <div class="team-card">
+                            <h3>[Your Name]</h3>
+                            <p class="team-role">Lead Developer & UI Designer</p>
+                            <p>Responsible for project structure, CSS styling, and overall coordination.</p>
+                        </div>
+                        <div class="team-card">
+                            <h3>[Partner Name]</h3>
+                            <p class="team-role">API Integration & Card System</p>
+                            <p>Handles Jikan API integration and character card rendering.</p>
+                        </div>
+                        <div class="team-card">
+                            <h3>[Partner Name]</h3>
+                            <p class="team-role">Search & Filters</p>
+                            <p>Implements search functionality and filter buttons.</p>
+                        </div>
+                        <div class="team-card">
+                            <h3>[Partner Name]</h3>
+                            <p class="team-role">Favorites & Storage</p>
+                            <p>Manages localStorage for saving favorite characters.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-section">
+                    <h2>🛠️ Technologies Used</h2>
+                    <div class="tech-list">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Jikan API</span>
+                        <span class="tech-tag">Font Awesome</span>
+                        <span class="tech-tag">Netlify</span>
+                    </div>
+                </div>
+                
+                <div class="about-section">
+                    <h2>📞 Contact & Links</h2>
+                    <ul class="contact-links">
+                        <li><a href="https://github.com/link-jpeg/jujupedia-wiki.git" target="_blank"><i class="fab fa-github"></i> GitHub Repository</a></li>
+                        <li><a href="https://myanimelist.net/anime/40748/Jujutsu_Kaisen" target="_blank"><i class="fas fa-external-link-alt"></i> Jujutsu Kaisen on MyAnimeList</a></li>
+                        <li><a href="#" id="report-link"><i class="fas fa-envelope"></i> Report an Issue</a></li>
+                    </ul>
+                </div>
+                
+                <div class="about-section">
+                    <h2>📝 Disclaimer</h2>
+                    <p>Jujupedia is a fan-made project created for educational purposes (INFO 1601). All character data is provided by the Jikan API (unofficial MyAnimeList API). We do not claim ownership of any Jujutsu Kaisen characters or images.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to Jujupedia</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="bob@mail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="bobpass" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                    <div class="demo-credentials">
+                        <small>Demo: bob@mail.com / bobpass</small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="assets/logo-2.jpg" alt="Jujupedia" class="footer-logo-img">
+                        <p>The Ultimate Jujutsu Kaisen Encyclopedia</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="characters.html">Characters</a></li>
+                        <li><a href="favorites.html">My Favorites</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i> Facebook</a>
+                        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+                        <a href="https://discord.com" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <ul>
+                        <li><a href="about.html">Our Team</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Jujupedia - All rights reserved</p>
+                <p>Data provided by Jikan API (MyAnimeList)</p>
+            </div>
+        </div>
+    </footer>
+
+    <button onclick="topFunction()" id="backToTopBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+    <script src="js/firebase-init.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/storage.js"></script>
+</body>
+</html>

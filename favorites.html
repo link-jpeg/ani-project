@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jujupedia - Home</title>
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <title>Jujupedia - My Favorites</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -20,9 +20,9 @@
                     <span class="tagline">Jujutsu Kaisen Encyclopedia</span>
                 </div>
                 <div class="nav-links">
-                    <a href="index.html" class="nav-link active">Home</a>
+                    <a href="index.html" class="nav-link">Home</a>
                     <a href="characters.html" class="nav-link">Characters</a>
-                    <a href="favorites.html" class="nav-link">My Favorites</a>
+                    <a href="favorites.html" class="nav-link active">My Favorites</a>
                     <a href="about.html" class="nav-link">About</a>
                 </div>
                 <div class="auth-section">
@@ -36,51 +36,12 @@
 
     <main class="main">
         <div class="container">
-            <div class="hero">
-                <h1>Welcome to Jujupedia</h1>
-                <p>The Ultimate Jujutsu Kaisen Encyclopedia</p>
-                <div class="hero-buttons">
-                    <a href="characters.html" class="btn btn-primary">Browse Characters</a>
-                    <a href="favorites.html" class="btn btn-secondary">My Favorites</a>
-                </div>
+            <div class="favorites-header">
+                <h2>⭐ My Favorite Characters</h2>
+                <button id="clear-favorites-btn" class="btn btn-danger" style="display: none;">Clear All</button>
             </div>
-
-            <div class="stats">
-                <div class="stat-card">
-                    <h2>63+</h2>
-                    <p>Characters</p>
-                </div>
-                <div class="stat-card">
-                    <h2>20+</h2>
-                    <p>Cursed Techniques</p>
-                </div>
-                <div class="stat-card">
-                    <h2>10+</h2>
-                    <p>Domain Expansions</p>
-                </div>
-            </div>
-
-            <div class="features">
-                <div class="feature-card">
-                    <div class="feature-icon">📚</div>
-                    <h3>Complete Database</h3>
-                    <p>Every character from Jujutsu Kaisen Season 1</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⭐</div>
-                    <h3>Save Favorites</h3>
-                    <p>Login to bookmark your favorite characters</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📖</div>
-                    <h3>Detailed Bios</h3>
-                    <p>Grades, techniques, domains, and voice actors</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Search & Filter</h3>
-                    <p>Find characters by name, role, or grade</p>
-                </div>
+            <div id="favorites-grid" class="character-grid">
+                <div class="loading">🔒 Login to see your favorites</div>
             </div>
         </div>
     </main>
@@ -162,5 +123,6 @@
     <script src="js/firebase-init.js"></script>
     <script src="js/modal.js"></script>
     <script src="js/storage.js"></script>
+    <script src="js/favorites.js"></script>
 </body>
 </html>
