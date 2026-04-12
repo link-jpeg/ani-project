@@ -1,5 +1,3 @@
-// Jujupedia - Card Rendering System
-
 // ============================================
 // FALLBACK STORAGE FUNCTIONS (in case storage.js fails)
 // ============================================
