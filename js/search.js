@@ -194,6 +194,97 @@ function showResultCount(count) {
 // PUBLIC API
 // ============================================
 
+let currentFilter = 'all';
+let currentSearchTerm = '';
+
+function setupSearch() {
+    const searchInput = document.getElementById('search-input');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearchTerm = e.target.value.toLowerCase();
+            applyFiltersAndSearch();
+        });
+    }
+    
+    // Setup filter buttons
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Update active state
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Update current filter
+            currentFilter = btn.getAttribute('data-filter');
+            applyFiltersAndSearch();
+        });
+    });
+}
+
+function applyFiltersAndSearch() {
+    if (typeof globalCharacterData === 'undefined' || !globalCharacterData) {
+        return;
+    }
+    
+    let filtered = [...globalCharacterData];
+    
+    // Apply search filter
+    if (currentSearchTerm) {
+        filtered = filtered.filter(character => 
+            character.character.name.toLowerCase().includes(currentSearchTerm)
+        );
+    }
+    
+    // Apply category filter
+    if (currentFilter !== 'all') {
+        filtered = filtered.filter(character => {
+            const name = character.character.name.toLowerCase();
+            const role = character.role?.toLowerCase() || '';
+            
+            switch(currentFilter) {
+                case 'students':
+                    return role.includes('main') || 
+                           name.includes('itadori') || 
+                           name.includes('fushiguro') || 
+                           name.includes('kugisaki') ||
+                           name.includes('yuji') ||
+                           name.includes('megumi') ||
+                           name.includes('nobara');
+                case 'teachers':
+                    return name.includes('gojo') || 
+                           name.includes('nanami') ||
+                           name.includes('geto');
+                case 'villains':
+                    return name.includes('sukuna') || 
+                           name.includes('mahito') || 
+                           name.includes('kenjaku') || 
+                           name.includes('jogo') ||
+                           name.includes('hanami') ||
+                           name.includes('dagon');
+                case 'special-grade':
+                    return name.includes('gojo') || 
+                           name.includes('sukuna') || 
+                           name.includes('yuta') || 
+                           name.includes('geto') ||
+                           name.includes('okotsu');
+                default:
+                    return true;
+            }
+        });
+    }
+    
+    // Render filtered results
+    if (typeof renderCharacterCards === 'function') {
+        renderCharacterCards(filtered);
+    }
+}
+
+// Initialize search when DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+    setupSearch();
+});
+
 function setSearchTerm(term) {
     currentSearchTerm = term.toLowerCase();
     applyFiltersAndSearch();
