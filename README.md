@@ -1,2 +1,2 @@
-# ani-project
+# Jujupedia Wiki
 Project Start up
