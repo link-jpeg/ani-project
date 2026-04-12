@@ -1,1 +1,21 @@
-
+{
+    "name": "Jujupedia - Jujutsu Kaisen Encyclopedia",
+    "short_name": "Jujupedia",
+    "description": "The ultimate Jujutsu Kaisen character database",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#9b30ff",
+    "background_color": "#0a0a0a",
+    "icons": [
+        {
+            "src": "https://via.placeholder.com/192x192?text=JJK",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "https://via.placeholder.com/512x512?text=JJK",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
