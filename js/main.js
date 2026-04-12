@@ -1,16 +1,13 @@
 // Jujupedia - Main JavaScript File
-// Handles API fetching, loading overlay, and global data
+// Handles API fetching, initialization, and global state
 
 let globalCharacterData = [];
-let currentFilter = 'all';
-let currentSearchTerm = '';
 
 // JJK Anime ID for Jikan API (Season 1 = 40748)
 const JJK_ANIME_ID = 40748;
 
 // DOM Elements
 const characterGrid = document.getElementById('character-grid');
-const searchInput = document.getElementById('search-input');
 
 // ============================================
 // LOADING OVERLAY WITH ANIMATED DOTS
@@ -27,7 +24,7 @@ function animateLoadingDots() {
 }
 
 // Start the dot animation
-setInterval(animateLoadingDots, 500);
+const dotInterval = setInterval(animateLoadingDots, 500);
 
 function hideLoadingOverlay() {
     const overlay = document.getElementById('loading-overlay');
@@ -35,6 +32,7 @@ function hideLoadingOverlay() {
         overlay.style.opacity = '0';
         setTimeout(() => {
             overlay.style.display = 'none';
+            clearInterval(dotInterval);
         }, 500);
     }
 }
@@ -45,6 +43,8 @@ function hideLoadingOverlay() {
 
 async function fetchJJKCharacters() {
     try {
+        console.log('Fetching JJK characters from Jikan API...');
+        
         const response = await fetch(`https://api.jikan.moe/v4/anime/${JJK_ANIME_ID}/characters`);
         
         if (!response.ok) {
@@ -54,9 +54,21 @@ async function fetchJJKCharacters() {
         const data = await response.json();
         globalCharacterData = data.data;
         
-        // Render the characters
+        console.log(`Successfully fetched ${globalCharacterData.length} characters`);
+        
+        // Store for search functionality
+        if (typeof window.storeCharacterData === 'function') {
+            window.storeCharacterData(globalCharacterData);
+        }
+        
+        // Render characters
         if (typeof renderCharacterCards === 'function') {
             renderCharacterCards(globalCharacterData);
+        } else {
+            console.error('renderCharacterCards function not found - card.js may not be loaded');
+            if (characterGrid) {
+                characterGrid.innerHTML = '<div class="loading">Error: card.js not loaded properly</div>';
+            }
         }
         
         // Hide loading overlay
@@ -65,125 +77,16 @@ async function fetchJJKCharacters() {
     } catch (error) {
         console.error('Error fetching JJK characters:', error);
         if (characterGrid) {
-            characterGrid.innerHTML = '<div class="loading">Failed to load characters. Please refresh the page.</div>';
+            characterGrid.innerHTML = `
+                <div class="loading">
+                    <p>Failed to load characters.</p>
+                    <p style="font-size: 0.8rem; margin-top: 10px;">${error.message}</p>
+                    <button onclick="location.reload()" style="margin-top: 15px; padding: 8px 16px; background: #9b30ff; border: none; color: white; border-radius: 5px; cursor: pointer;">Retry</button>
+                </div>
+            `;
         }
         // Still hide overlay after error
         setTimeout(hideLoadingOverlay, 1000);
-    }
-}
-
-// ============================================
-// FILTER FUNCTIONALITY
-// ============================================
-
-function filterCharacters() {
-    let filtered = [...globalCharacterData];
-    
-    // Apply search filter
-    if (currentSearchTerm) {
-        filtered = filtered.filter(character => 
-            character.character.name.toLowerCase().includes(currentSearchTerm)
-        );
-    }
-    
-    // Apply category filter (based on role)
-    if (currentFilter !== 'all') {
-        filtered = filtered.filter(character => {
-            const role = character.role?.toLowerCase() || '';
-            const name = character.character.name.toLowerCase();
-            
-            switch(currentFilter) {
-                case 'students':
-                    return role.includes('main') || name.includes('itadori') || name.includes('fushiguro') || name.includes('kugisaki');
-                case 'teachers':
-                    return role.includes('supporting') && (name.includes('gojo') || name.includes('nanami'));
-                case 'villains':
-                    return name.includes('sukuna') || name.includes('mahito') || name.includes('kenjaku') || name.includes('jogo');
-                case 'special-grade':
-                    return name.includes('gojo') || name.includes('sukuna') || name.includes('yuta') || name.includes('geto');
-                default:
-                    return true;
-            }
-        });
-    }
-    
-    // Render filtered results
-    if (typeof renderCharacterCards === 'function') {
-        renderCharacterCards(filtered);
-    }
-}
-
-// Setup filter buttons
-function setupFilters() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Update active state
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            // Update current filter
-            currentFilter = btn.getAttribute('data-filter');
-            
-            // Apply filter
-            filterCharacters();
-        });
-    });
-}
-
-// ============================================
-// SEARCH FUNCTIONALITY
-// ============================================
-
-function setupSearch() {
-    if (!searchInput) return;
-    
-    searchInput.addEventListener('input', (e) => {
-        currentSearchTerm = e.target.value.toLowerCase();
-        filterCharacters();
-    });
-}
-
-// ============================================
-// LOGOUT FUNCTIONALITY
-// ============================================
-
-function setupLogout() {
-    const logoutBtn = document.getElementById('logout-btn');
-    const loginBtn = document.getElementById('login-btn');
-    const userGreeting = document.getElementById('user-greeting');
-    
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('userEmail');
-            if (loginBtn) loginBtn.style.display = 'block';
-            if (logoutBtn) logoutBtn.style.display = 'none';
-            if (userGreeting) userGreeting.style.display = 'none';
-            
-            // Refresh the page to reset favorite buttons
-            location.reload();
-        });
-    }
-}
-
-// ============================================
-// CHECK LOGIN STATUS ON PAGE LOAD
-// ============================================
-
-function checkLoginStatus() {
-    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-    const loginBtn = document.getElementById('login-btn');
-    const logoutBtn = document.getElementById('logout-btn');
-    const userGreeting = document.getElementById('user-greeting');
-    
-    if (isLoggedIn && loginBtn && logoutBtn && userGreeting) {
-        const userEmail = localStorage.getItem('userEmail') || 'User';
-        userGreeting.textContent = `👤 ${userEmail.split('@')[0]}`;
-        userGreeting.style.display = 'inline';
-        loginBtn.style.display = 'none';
-        logoutBtn.style.display = 'inline-block';
     }
 }
 
@@ -192,18 +95,10 @@ function checkLoginStatus() {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if user is logged in
-    checkLoginStatus();
-    
-    // Setup search
-    setupSearch();
-    
-    // Setup filters
-    setupFilters();
-    
-    // Setup logout
-    setupLogout();
+    console.log('Jujupedia initializing...');
     
     // Fetch JJK characters
     fetchJJKCharacters();
 });
+
+console.log('main.js loaded successfully');
